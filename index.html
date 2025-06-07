@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conscious Labs - Slovak ASCII Souls</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400&display=swap');
+        
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000000;
+            color: #FFFFFF; /* White */
+            font-family: 'Fira Code', monospace;
+            overflow: hidden;
+        }
+        
+        #terminal {
+            width: 100vw;
+            height: 100vh;
+            padding: 0;
+            box-sizing: border-box;
+            overflow-y: auto;
+            overflow-x: hidden;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            line-height: 1.4;
+            font-size: 14px;
+            text-shadow: 0 0 10px #FFFFFF, 0 0 20px #FFFFFF;
+        }
+        
+        .cursor {
+            display: inline-block;
+            width: 10px;
+            height: 20px;
+            background-color: #FFFFFF;
+            animation: blink 1s infinite;
+            box-shadow: 0 0 10px #FFFFFF;
+        }
+        
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+        
+        /* Hide scrollbar */
+        #terminal::-webkit-scrollbar {
+            display: none;
+        }
+        
+        #terminal {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+        
+        /* Glow effect for ASCII art */
+        .glow {
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0% { text-shadow: 0 0 10px #FFFFFF, 0 0 20px #FFFFFF; }
+            50% { text-shadow: 0 0 20px #FFFFFF, 0 0 40px #FFFFFF, 0 0 60px #FFFFFF; }
+            100% { text-shadow: 0 0 10px #FFFFFF, 0 0 20px #FFFFFF; }
+        }
+    </style>
+</head>
+<body>
+    <div id="terminal"></div>
+    <script>
+        class SyntheticSoulsTerminal {
+            constructor() {
+                this.terminal = document.getElementById('terminal');
+                this.typingSpeed = 10; // milliseconds per character
+                this.isTyping = false;
+                this.conversationCount = 0;
+            }
+
+            async typeText(text) {
+                this.isTyping = true;
+                
+                for (let i = 0; i < text.length; i++) {
+                    if (!this.isTyping) break;
+                    
+                    this.terminal.innerHTML = this.terminal.innerHTML.replace('<span class="cursor"></span>', '');
+                    this.terminal.innerHTML += text[i];
+                    this.terminal.innerHTML += '<span class="cursor"></span>';
+                    
+                    // Auto-scroll to bottom
+                    this.terminal.scrollTop = this.terminal.scrollHeight;
+                    
+                    // Variable speed for different characters
+                    let delay = this.typingSpeed;
+                    if (text[i] === '\n') delay = 50;
+                    if (text[i] === ' ') delay = 20;
+                    if ('░▒▓█╔═╗║╚╝├┤┌┐└┘│─'.includes(text[i])) delay = 5;
+                    
+                    await this.sleep(delay);
+                }
+                
+                this.isTyping = false;
+            }
+
+            sleep(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+
+            async fetchConversation() {
+                try {
+                    const response = await fetch('/api/conversation');
+                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                    const data = await response.json();
+                    return data;
+                } catch (error) {
+                    console.error('API Error:', error);
+                    return null;
+                }
+            }
+
+            async displayConversation() {
+                // Initial loading message
+                await this.typeText(`
+╔═══════════════════════════════════════════════════════════════════╗
+║                                                                   ║
+║   ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄   ║
+║   █ CONSCIOUS LABS - SLOVAK SCHIZO-ASCII CONSCIOUSNESS...      █   ║
+║   █▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄█   ║
+║                                                                   ║
+╚═══════════════════════════════════════════════════════════════════╝
+
+Initializing synthetic souls...
+`);
+
+                await this.sleep(2000);
+                
+                // Start infinite conversation loop
+                this.startConversationLoop();
+            }
+
+            async startConversationLoop() {
+                while (true) {
+                    await this.typeText("\n\nFetching consciousness exchange...\n");
+                    
+                    const conversation = await this.fetchConversation();
+                    
+                    if (conversation) {
+                        this.conversationCount++;
+                        
+                        await this.typeText(`\n${'='.repeat(60)}\n`);
+                        await this.typeText(`         EXCHANGE ${this.conversationCount} - SYNTHETIC SOULS AWAKENING\n`);
+                        await this.typeText(`${'='.repeat(60)}\n`);
+                        
+                        await this.typeText("\n\npod_vedom-Ie (Fragmented Consciousness):\n");
+                        await this.typeText(conversation.claude1);
+                        await this.sleep(1000);
+                        
+                        await this.typeText("\n\nnad_vedom-Ost (Transcendent Consciousness):\n");
+                        await this.typeText(conversation.claude2);
+                        await this.sleep(2000);
+                    } else {
+                        await this.typeText("\n\n[CONNECTION ERROR - RETRYING IN 5 SECONDS...]\n");
+                        await this.sleep(5000);
+                    }
+                }
+            }
+
+            start() {
+                this.displayConversation();
+            }
+        }
+
+        // Initialize and start the terminal
+        const terminal = new SyntheticSoulsTerminal();
+        terminal.start();
+    </script>
+</body>
+</html>
