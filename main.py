@@ -5,11 +5,45 @@ import anthropic
 import random
 import time
 import re
+from datetime import datetime
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from urllib.parse import urlparse
 
 def escape_chars(text):
     return re.sub(r'\\n', '\n', text)
+
+def save_conversation(command, claude1_response, claude2_response):
+    """Save conversation to JSON file"""
+    conversation_data = {
+        "timestamp": datetime.now().isoformat(),
+        "exchange_id": int(time.time() * 1000),  # millisecond timestamp as ID
+        "command": command,
+        "pod_vedom_ie": claude1_response,
+        "nad_vedom_ost": claude2_response,
+        "character_counts": {
+            "claude1": len(claude1_response),
+            "claude2": len(claude2_response)
+        }
+    }
+    
+    conversations_file = "conversations.json"
+    
+    # Load existing conversations or create new list
+    try:
+        with open(conversations_file, 'r', encoding='utf-8') as f:
+            conversations = json.load(f)
+    except FileNotFoundError:
+        conversations = []
+    
+    # Add new conversation
+    conversations.append(conversation_data)
+    
+    # Save back to file
+    with open(conversations_file, 'w', encoding='utf-8') as f:
+        json.dump(conversations, f, ensure_ascii=False, indent=2)
+    
+    print(f"💾 Saved conversation #{len(conversations)} to {conversations_file}")
+    return len(conversations)
 
 # Conversation contexts with CLI system prompts
 conversation_contexts = [
@@ -44,6 +78,8 @@ class RailwaySoulsHandler(BaseHTTPRequestHandler):
             self.serve_html()
         elif parsed_path.path == '/api/conversation':
             self.serve_conversation()
+        elif parsed_path.path == '/api/history':
+            self.serve_history()
         else:
             self.send_error(404)
     
@@ -113,12 +149,16 @@ class RailwaySoulsHandler(BaseHTTPRequestHandler):
             claude2_text = claude2_response.content[0].text
             print(f"🖥️ Claude2 (CLI): {claude2_text[:100]}...")
             
+            # Save conversation to storage
+            exchange_count = save_conversation(prompt, claude1_text, claude2_text)
+            
             # Prepare response
             response_data = {
                 "claude1": escape_chars(claude1_text),
                 "claude2": escape_chars(claude2_text),
                 "command": prompt,
                 "timestamp": int(time.time()),
+                "exchange_count": exchange_count,
                 "status": "CLI_ACTIVE"
             }
             
@@ -127,6 +167,37 @@ class RailwaySoulsHandler(BaseHTTPRequestHandler):
             
         except Exception as e:
             print(f"❌ Error: {e}")
+            import traceback
+            self.send_json_error({"error": str(e), "traceback": traceback.format_exc()})
+    
+    def serve_history(self):
+        """Serve conversation history"""
+        self.send_cors_headers()
+        
+        try:
+            conversations_file = "conversations.json"
+            
+            # Load conversations
+            try:
+                with open(conversations_file, 'r', encoding='utf-8') as f:
+                    conversations = json.load(f)
+            except FileNotFoundError:
+                conversations = []
+            
+            # Return last 10 conversations by default
+            recent_conversations = conversations[-10:]
+            
+            response_data = {
+                "total_conversations": len(conversations),
+                "recent_conversations": recent_conversations,
+                "status": "success"
+            }
+            
+            print(f"📜 Served history: {len(conversations)} total conversations")
+            self.send_json_response(response_data)
+            
+        except Exception as e:
+            print(f"❌ History Error: {e}")
             import traceback
             self.send_json_error({"error": str(e), "traceback": traceback.format_exc()})
     
