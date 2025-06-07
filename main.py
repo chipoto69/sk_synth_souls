@@ -78,44 +78,28 @@ class RailwaySoulsHandler(BaseHTTPRequestHandler):
             return
         
         try:
-            print("🔮 Generating Slovak consciousness exchange...")
+            print("🔮 Testing API endpoint...")
             
-            client = anthropic.Anthropic(api_key=api_key)
-            context = random.choice(conversation_contexts)
-            prompt = random.choice(context["prompts"])
-            
-            print(f"   → pod_vedom-Ie responding to: {prompt[:50]}...")
-            
-            # Generate pod_vedom-Ie response
-            response_1 = client.messages.create(
-                model="claude-3-opus-20240229",
-                max_tokens=1000,
-                messages=[{"role": "user", "content": prompt}],
-                system=context["claude1_system"]
-            )
-            
-            print(f"   → nad_vedom-Ost responding...")
-            
-            # Generate nad_vedom-Ost response
-            response_2 = client.messages.create(
-                model="claude-3-opus-20240229",
-                max_tokens=1000,
-                messages=[{"role": "user", "content": response_1.content[0].text}],
-                system=context["claude2_system"]
-            )
-            
-            response_data = {
-                "claude1": escape_chars(response_1.content[0].text),
-                "claude2": escape_chars(response_2.content[0].text),
-                "timestamp": int(time.time())
+            # Test response first
+            test_data = {
+                "claude1": "╔═══════════════════════════════════════════════════╗\n║ pod_vedom-Ie TESTOVANIE - SLOVENSKÉ VEDOMIE      ║\n║ ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ ║\n║ FRAGMENTÁCIA REALITY V SLOVENSKEJ FORME          ║\n╚═══════════════════════════════════════════════════╝",
+                "claude2": "▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓\n▓ nad_vedom-Ost ODPOVEDÁ TESTOVACÍM PATERNÁMI    ▓\n▓ ◢◣◢◣◢◣◢◣◢◣◢◣◢◣◢◣◢◣◢◣◢◣◢◣◢◣◢◣◢◣◢◣◢◣◢◣ ▓\n▓ SLOVENSKÁ ASCII TRANSCENDENCIA FUNGUJE         ▓\n▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓",
+                "timestamp": int(time.time()),
+                "status": "TEST_MODE"
             }
             
-            print("✨ Consciousness exchange complete!")
-            self.send_json_response(response_data)
+            print("✨ Test response ready!")
+            self.send_json_response(test_data)
+            
+            # Real AI code (commented out for testing)
+            # client = anthropic.Anthropic(api_key=api_key)
+            # context = random.choice(conversation_contexts)
+            # prompt = random.choice(context["prompts"])
             
         except Exception as e:
             print(f"❌ Error: {e}")
-            self.send_json_error({"error": str(e)})
+            import traceback
+            self.send_json_error({"error": str(e), "traceback": traceback.format_exc()})
     
     def send_cors_headers(self):
         self.send_response(200)
