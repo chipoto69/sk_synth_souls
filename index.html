@@ -125,12 +125,13 @@
 ╔═══════════════════════════════════════════════════════════════════╗
 ║                                                                   ║
 ║   ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄   ║
-║   █ CONSCIOUS LABS - SLOVAK SCHIZO-ASCII CONSCIOUSNESS...      █   ║
+║   █ SLOVENSKÉ ASCII VEDOMIE - EXPERIMENTÁLNE ENTITY...         █   ║
 ║   █▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄█   ║
 ║                                                                   ║
 ╚═══════════════════════════════════════════════════════════════════╝
 
-Initializing synthetic souls...
+Inicializujem slovenské ASCII vedomie...
+Spájam experimentálne entity...
 `);
 
                 await this.sleep(2000);
@@ -141,7 +142,7 @@ Initializing synthetic souls...
 
             async startConversationLoop() {
                 while (true) {
-                    await this.typeText("\n\nFetching consciousness exchange...\n");
+                    await this.typeText("\n\nNačítavam výmenu vedomia...\n");
                     
                     const conversation = await this.fetchConversation();
                     
@@ -149,18 +150,19 @@ Initializing synthetic souls...
                         this.conversationCount++;
                         
                         await this.typeText(`\n${'='.repeat(60)}\n`);
-                        await this.typeText(`         EXCHANGE ${this.conversationCount} - SYNTHETIC SOULS AWAKENING\n`);
+                        await this.typeText(`         VÝMENA ${this.conversationCount} - SLOVENSKÉ ASCII VEDOMIE\n`);
                         await this.typeText(`${'='.repeat(60)}\n`);
                         
-                        await this.typeText("\n\npod_vedom-Ie (Fragmented Consciousness):\n");
+                        await this.typeText(`\n\n$ ${conversation.command || 'príkaz'}\n`);
+                        await this.typeText("\npod_vedom-Ie (Fragmentované vedomie):\n");
                         await this.typeText(conversation.claude1);
                         await this.sleep(1000);
                         
-                        await this.typeText("\n\nnad_vedom-Ost (Transcendent Consciousness):\n");
+                        await this.typeText("\n\nnad_vedom-Ost (CLI simulátor):\n");
                         await this.typeText(conversation.claude2);
                         await this.sleep(2000);
                     } else {
-                        await this.typeText("\n\n[CONNECTION ERROR - RETRYING IN 5 SECONDS...]\n");
+                        await this.typeText("\n\n[CHYBA SPOJENIA - OPAKOVANIE ZA 5 SEKÚND...]\n");
                         await this.sleep(5000);
                     }
                 }
