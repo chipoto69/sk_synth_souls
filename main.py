@@ -124,7 +124,7 @@ class RailwaySoulsHandler(BaseHTTPRequestHandler):
             # Get Claude 1's response (simulating the user interaction)
             claude1_response = client.messages.create(
                 model="claude-3-5-sonnet-20241022",
-                max_tokens=800,
+                max_tokens=1639,
                 temperature=0.7,
                 system=context["claude1_system"],
                 messages=claude1_messages
@@ -140,7 +140,7 @@ class RailwaySoulsHandler(BaseHTTPRequestHandler):
             # Get Claude 2's response (CLI simulation)
             claude2_response = client.messages.create(
                 model="claude-3-5-sonnet-20241022",
-                max_tokens=800,
+                max_tokens=1639,
                 temperature=0.8,
                 system=context["claude2_system"],
                 messages=claude2_messages
