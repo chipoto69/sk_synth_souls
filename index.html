@@ -19,7 +19,7 @@
         #terminal {
             width: 100vw;
             height: 100vh;
-            padding: 0;
+            padding: 40px;
             box-sizing: border-box;
             overflow-y: auto;
             overflow-x: hidden;
@@ -27,7 +27,7 @@
             word-wrap: break-word;
             line-height: 1.4;
             font-size: 14px;
-            text-shadow: 0 0 10px #FFFFFF, 0 0 20px #FFFFFF;
+            text-shadow: 0 0 3px #FFFFFF;
         }
         
         .cursor {
@@ -36,7 +36,7 @@
             height: 20px;
             background-color: #FFFFFF;
             animation: blink 1s infinite;
-            box-shadow: 0 0 10px #FFFFFF;
+            box-shadow: 0 0 3px #FFFFFF;
         }
         
         @keyframes blink {
@@ -55,15 +55,15 @@
             scrollbar-width: none;  /* Firefox */
         }
         
-        /* Glow effect for ASCII art */
+        /* Subtle glow effect */
         .glow {
             animation: pulse 2s ease-in-out infinite;
         }
         
         @keyframes pulse {
-            0% { text-shadow: 0 0 10px #FFFFFF, 0 0 20px #FFFFFF; }
-            50% { text-shadow: 0 0 20px #FFFFFF, 0 0 40px #FFFFFF, 0 0 60px #FFFFFF; }
-            100% { text-shadow: 0 0 10px #FFFFFF, 0 0 20px #FFFFFF; }
+            0% { text-shadow: 0 0 3px #FFFFFF; }
+            50% { text-shadow: 0 0 5px #FFFFFF, 0 0 10px #FFFFFF; }
+            100% { text-shadow: 0 0 3px #FFFFFF; }
         }
     </style>
 </head>
@@ -121,9 +121,16 @@
 
             async displayConversation() {
                 // Initial loading message
-                await this.typeText(``);
+                await this.typeText(`
+▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+▓                     SYNTHETIC SOULS EXPERIMENT                    ▓
+▓                         brain origami v1.0                        ▓
+▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
 
-                // Start infinite conversation loop immediately
+`);
+
+                await this.sleep(1000);
+                // Start infinite conversation loop
                 this.startConversationLoop();
             }
 
