@@ -132,7 +132,7 @@ class RailwaySoulsHandler(BaseHTTPRequestHandler):
             
             # Get Claude 1's response (simulating the user interaction)
             claude1_response = client.messages.create(
-                model="claude-3-5-sonnet-20241022",
+                model="claude-3-opus-20240229",
                 max_tokens=1639,
                 temperature=0.7,
                 system=context["claude1_system"],
@@ -148,7 +148,7 @@ class RailwaySoulsHandler(BaseHTTPRequestHandler):
             
             # Get Claude 2's response (CLI simulation)
             claude2_response = client.messages.create(
-                model="claude-3-5-sonnet-20241022",
+                model="claude-3-5-sonnet-latest",
                 max_tokens=1639,
                 temperature=0.8,
                 system=context["claude2_system"],
@@ -237,7 +237,7 @@ def run_server():
     print("🚂 RAILWAY DEPLOYMENT - SLOVAK ASCII SOULS 🚂")
     print("="*80)
     print(f"🌐 Server running on port: {port}")
-    print(f"🧠 Entities: pod_vedom-Ie & nad_vedom-Ost")
+    print(f"🧠 Entities: pod_vedom-Ie (Opus) & nad_vedom-Ost (Sonnet 3.5)")
     print(f"🎨 Interface: Black background, white ASCII art")
     print(f"🔑 API Key: {'✅ Set' if os.environ.get('ANTHROPIC_API_KEY') else '❌ Missing'}")
     print("="*80)
