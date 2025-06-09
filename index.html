@@ -121,44 +121,25 @@
 
             async displayConversation() {
                 // Initial loading message
-                await this.typeText(`
-╔═══════════════════════════════════════════════════════════════════╗
-║                                                                   ║
-║   ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄   ║
-║   █ SLOVENSKÉ ASCII VEDOMIE - EXPERIMENTÁLNE ENTITY...         █   ║
-║   █▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄█   ║
-║                                                                   ║
-╚═══════════════════════════════════════════════════════════════════╝
+                await this.typeText(``);
 
-Inicializujem slovenské ASCII vedomie...
-Spájam experimentálne entity...
-`);
-
-                await this.sleep(2000);
-                
-                // Start infinite conversation loop
+                // Start infinite conversation loop immediately
                 this.startConversationLoop();
             }
 
             async startConversationLoop() {
                 while (true) {
-                    await this.typeText("\n\nNačítavam výmenu vedomia...\n");
                     
                     const conversation = await this.fetchConversation();
                     
                     if (conversation) {
                         this.conversationCount++;
                         
-                        await this.typeText(`\n${'='.repeat(60)}\n`);
-                        await this.typeText(`         VÝMENA ${this.conversationCount} - SLOVENSKÉ ASCII VEDOMIE\n`);
-                        await this.typeText(`${'='.repeat(60)}\n`);
-                        
                         await this.typeText(`\n\n$ ${conversation.command || 'príkaz'}\n`);
-                        await this.typeText("\npod_vedom-Ie (Fragmentované vedomie):\n");
                         await this.typeText(conversation.claude1);
                         await this.sleep(1000);
                         
-                        await this.typeText("\n\nnad_vedom-Ost (CLI simulátor):\n");
+                        await this.typeText("\n\n");
                         await this.typeText(conversation.claude2);
                         await this.sleep(2000);
                     } else {
